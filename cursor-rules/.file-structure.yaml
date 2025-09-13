@@ -1,0 +1,27 @@
+# cursor-rules/file-structure.yaml
+
+- description: File and project structure
+  rules:
+    - Organize the project into multiple files/modules instead of one large script.
+    - Common initial structure:
+        - `main.py` → entry point, runs the game loop.
+        - `game.py` → main Game class and flow control.
+        - `settings.py` → constants and configuration (screen size, colors, FPS).
+        - `assets/` → store images, sounds, and fonts.
+    - Other modules should be created as needed depending on game logic; example names (like `board.py` or `piece.py`) are illustrative only.
+    - If a file grows too large, promote it into a folder (package with `__init__.py`) and split it into smaller files.  
+      Example:
+        ```
+        pieces/
+          __init__.py
+          shapes.py       # shape definitions
+          movement.py     # rotation/movement logic
+        ```
+    - The AI has full freedom to decide filenames and folder names, as long as they follow best practices and reflect the logic contained within.
+    - Use descriptive, self-explanatory names for new submodules.
+    - **Naming conventions**:
+        - **Python files**: lowercase, underscores for separation (e.g. `game_loop.py`, `piece_movement.py`).
+        - **Folders/packages**: lowercase, underscores optional (e.g. `pieces/`, `board_utils/`).
+        - **Classes**: PascalCase (e.g. `GameBoard`, `TetrisPiece`).
+        - **Functions/variables**: lowercase_with_underscores (e.g. `rotate_piece`, `check_collision`).
+        - **Constants**: UPPERCASE_WITH_UNDERSCORES (e.g. `SCREEN_WIDTH`, `FPS`).

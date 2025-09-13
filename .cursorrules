@@ -1,0 +1,11 @@
+This project follows comprehensive development rules organized in the `cursor-rules/` directory:
+
+- Expert Python practices (`cursor-rules/expert-python.yaml`)
+- Documentation standards (`cursor-rules/documentation.yaml`) 
+- Game development structure (`cursor-rules/game-structure.yaml`)
+- Beginner-friendly code guidelines (`cursor-rules/beginner-friendly.yaml`)
+- File and project structure (`cursor-rules/.file-structure.yaml`)
+- Testing and quality assurance (`cursor-rules/testing.yaml`)
+- Project documentation requirements (`cursor-rules/readme.yaml`)
+
+Please follow all rules defined in these files when helping with this Tetris game development project.

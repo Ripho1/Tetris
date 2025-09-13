@@ -1,0 +1,7 @@
+- description: Beginner-friendly code
+  rules:
+    - Prefer readability over clever tricks or advanced abstractions.
+    - Avoid unnecessary complexity — keep the code explicit and easy to follow.
+    - When possible, use simple examples to illustrate core game logic (rotation, collision, input handling).
+    - If examples or utilities accumulate, move them into a separate helpers/ or utils/ folder.
+    - If any part grows too complex for a single file, split it into modules or folders with clear naming.

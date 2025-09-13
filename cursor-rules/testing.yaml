@@ -1,0 +1,12 @@
+- description: Testing and quality assurance
+  rules:
+    - Include a `tests/` folder at the project root for automated tests.
+    - Use `pytest` as the testing framework.
+    - **New features** must include unit tests for their core logic (e.g. piece rotation, collision detection, scoring, board clearing).
+    - **Bug fixes** must include a small, simple test that reproduces the bug, which is then added to the project tests.
+    - When fixing a bug, always run all existing tests to ensure nothing else breaks.
+    - **Small non-critical changes** do not require new tests unless they touch core game logic.
+    - Keep tests small and focused — one concept per test.
+    - Use descriptive test names (e.g. `test_piece_rotates_clockwise`, `test_collision_with_wall`).
+    - If tests for a module grow too large, split them into multiple files inside `tests/` (e.g. `test_board.py`, `test_piece.py`).
+    - Ensure tests are runnable with `pytest` from the project root.

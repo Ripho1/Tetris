@@ -1,0 +1,6 @@
+- description: Expert Python practices
+  rules:
+    - Always generate code as an expert Python developer.
+    - Follow PEP8 style and standard best practices.
+    - Favor readability, clear naming, and modular design.
+    - If a file or class grows too large, split it into smaller modules or folders with clear naming.

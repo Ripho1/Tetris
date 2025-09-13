@@ -1,0 +1,6 @@
+- description: Meaningful documentation
+  rules:
+    - Every function must include a docstring explaining purpose, parameters, and return value.
+    - Inline comments should explain *why* the logic is written that way, not just *what* it does.
+    - Add short clarifications for Python features that may confuse beginners (e.g. class constructors, event loops).
+    - If documentation or comments become too long in a single file, split related logic into smaller files/folders.

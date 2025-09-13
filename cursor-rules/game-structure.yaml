@@ -1,0 +1,6 @@
+- description: Game development structure
+  rules:
+    - Use common game patterns: game loop, entities (Game, Player, Board, Piece, etc.), collision handling.
+    - Avoid giant scripts — separate responsibilities into functions and classes.
+    - If a game system grows too large (e.g. rendering, input, physics), split it into a dedicated folder with multiple modules.
+    - Follow common `pygame` or library conventions; do not reinvent core features.

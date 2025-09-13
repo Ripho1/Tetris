@@ -1,0 +1,19 @@
+- description: Project README and documentation files
+  rules:
+    - All important aspects of the project must have a corresponding Markdown summary in a `readme/` folder at the project root.
+    - Use `.md` files; each file should be small, concise, and focused on one topic.
+    - Common readme topics:
+        - Project structure (`readme/project_structure.md`) — high-level explanation of folders, files, and their responsibilities.
+        - Core feature mechanics (`readme/features.md`) — each feature’s purpose, inputs/outputs, and flows.
+        - Implementation details (`readme/implementation.md`) — important logic, algorithms, or patterns used in the project.
+    - When modifying a core feature or adding a new core feature:
+        - Update the corresponding readme file with a brief summary, or create a new md file if needed.
+        - Include only relevant information; avoid duplicating large blocks of code.
+    - Each summary should be **readable by both the agent and a human developer**:
+        - Use bullet points, headings, and concise paragraphs.
+        - Include high-level explanations, rationale, and relationships between modules or features.
+        - Optional: small code snippets if necessary for clarity.
+    - The goal is to always maintain **small, relevant README files** that:
+        - Serve as initial context for the agent.  
+        - Help a developer quickly understand project structure, flows, and feature mechanics.
+    - If a readme becomes too large, split it into subtopics with separate `.md` files in the `readme/` folder.
