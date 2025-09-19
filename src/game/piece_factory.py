@@ -35,7 +35,7 @@ class PieceFactory:
         self.piece_types = list(PieceType)
 
         self.pieces_order = list(self.piece_types)
-        self.pieces_order = random.shuffle(self.pieces_order)
+        random.shuffle(self.pieces_order)
 
     def create_random_piece(self) -> Piece:
         """
