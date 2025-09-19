@@ -27,6 +27,15 @@ class Colors:
     GRAY = (128, 128, 128)
     LIGHT_GRAY = (192, 192, 192)
 
+    # Tetris piece colors (standard)
+    CYAN = (0, 255, 255)  # I-piece
+    YELLOW = (255, 255, 0)  # O-piece
+    PURPLE = (128, 0, 128)  # T-piece
+    GREEN = (0, 255, 0)  # S-piece
+    RED = (255, 0, 0)  # Z-piece
+    BLUE = (0, 0, 255)  # J-piece
+    ORANGE = (255, 165, 0)  # L-piece
+
 
 class Game:
     """General game settings."""
