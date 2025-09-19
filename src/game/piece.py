@@ -98,7 +98,6 @@ class Piece:
             return [
                 # Rotation 0: T pointing up
                 [[0, 1, 0], [1, 1, 1]],
-                # TODO: Implement remaining T-piece rotations
                 # Rotation 1: T pointing right
                 [[1, 0], [1, 1], [1, 0]],
                 # Rotation 2: T pointing down
