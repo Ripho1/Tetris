@@ -7,9 +7,7 @@ Tests for game board functionality including:
 - Line detection and clearing logic
 """
 
-import pytest
 from src.game.board import Board
-from src.game.piece import Piece, PieceType
 
 
 def test_board_initialization():

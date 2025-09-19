@@ -7,7 +7,6 @@ Tests for Tetrimino piece functionality including:
 - Movement and position tracking
 """
 
-import pytest
 from src.game.piece import Piece, PieceType
 from src.game.piece_factory import PieceFactory
 

@@ -74,15 +74,18 @@ class Piece:
 
         if self.piece_type == PieceType.I:
             # I-piece: straight line (4 cells)
+            horizontal = [[1, 1, 1, 1]]
+            vertical = [[1], [1], [1], [1]]
+
             return [
                 # Rotation 0: horizontal
-                [[1, 1, 1, 1]],
+                horizontal,
                 # Rotation 1: vertical
-                [[1], [1], [1], [1]],
+                vertical,
                 # Rotation 2: horizontal (same as 0)
-                [[1, 1, 1, 1]],
+                horizontal,
                 # Rotation 3: vertical (same as 1)
-                [[1], [1], [1], [1]],
+                vertical,
             ]
 
         elif self.piece_type == PieceType.O:
@@ -118,7 +121,6 @@ class Piece:
             RGB tuple representing the piece color
 
         Note: Uses standard Tetris colors.
-        TODO: Consider making colors configurable in settings.
         """
         color_map = {
             PieceType.I: settings.colors.CYAN,  # I-piece
