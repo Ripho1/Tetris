@@ -6,7 +6,6 @@ Includes random piece generation and piece spawning logic.
 """
 
 import random
-from typing import Optional
 from src.game.piece import Piece, PieceType
 from src.config.settings import settings
 
@@ -50,7 +49,7 @@ class PieceFactory:
 
         if len(self.pieces_order) == 0:
             self.pieces_order = list(self.piece_types)
-            self.pieces_order = random.shuffle(self.pieces_order)
+            random.shuffle(self.pieces_order)
 
         return self.create_piece(piece_type)
 
@@ -74,8 +73,6 @@ class PieceFactory:
             List containing one piece of each type
 
         Useful for debug mode and testing.
-        TODO: Implement this method.
         """
-        # Create one piece of each type
-        # Return them in a list
-        pass
+
+        return [self.create_piece(piece_type) for piece_type in self.piece_types]
