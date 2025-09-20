@@ -86,14 +86,9 @@ class Board:
         Should only be called after validating position.
         """
         # Get all cells the piece occupies
-        # Set those board cells to the piece's color
-        locations = piece.get_cells()
-        invalid = any(self.get_cell(x, y) is not None for x, y in locations)
-
-        if invalid:
-            msg = "Invalid position: piece overlaps with existing blocks"
-            raise ValueError(msg)
-        for x, y in locations:
+        if not self.is_valid_position(piece):
+            raise ValueError("Invalid position: out of bounds or overlap")
+        for x, y in piece.get_cells():
             self.set_cell(x, y, piece.color)
 
     def clear_completed_lines(self) -> int:
@@ -163,8 +158,9 @@ class Board:
             y: Row index
             color: RGB color tuple or None for empty
         """
-        if 0 <= x < self.width and 0 <= y < self.height:
-            self.grid[x][y] = color
+        if not (0 <= x < self.width and 0 <= y < self.height):
+            raise IndexError(f"set_cell out of bounds: ({x}, {y})")
+        self.grid[x][y] = color
 
     def is_game_over(self) -> bool:
         """
