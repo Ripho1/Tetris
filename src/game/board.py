@@ -91,7 +91,8 @@ class Board:
         invalid = any(self.get_cell(x, y) is not None for x, y in locations)
 
         if invalid:
-            raise ValueError("Invalid position")
+            msg = "Invalid position: piece overlaps with existing blocks"
+            raise ValueError(msg)
         for x, y in locations:
             self.set_cell(x, y, piece.color)
 
@@ -106,19 +107,21 @@ class Board:
         After clearing, rows above fall down to fill the gaps.
         """
         completed_rows = [y for y in range(self.height) if self.is_line_complete(y)]
-        
+
         if not completed_rows:
             return 0
-        
+
         completed_set = set(completed_rows)
-        
+
         # Rebuild each column by filtering out completed rows
         for x in range(self.width):
-            new_column = [self.grid[x][y] for y in range(self.height) if y not in completed_set]
+            new_column = [
+                self.grid[x][y] for y in range(self.height) if y not in completed_set
+            ]
             # Add empty cells at the top
             new_column = [None] * len(completed_rows) + new_column
             self.grid[x] = new_column
-        
+
         return len(completed_rows)
 
     def is_line_complete(self, row: int) -> bool:
