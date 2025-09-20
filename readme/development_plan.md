@@ -9,7 +9,7 @@
 #### Tasks:
 - [x] Set up project structure and dependencies
 - [x] Create game window and basic rendering
-- [ ] Implement 7 Tetrimino shapes
+- [x] Implement 7 Tetrimino shapes
 - [ ] Add piece falling mechanics
 - [ ] Basic collision detection (bottom and sides)
 - [ ] Piece placement and stacking
@@ -19,7 +19,7 @@
   - [ ] Clear any existing piece or line
   - [ ] Toggle between debug and normal play
 
-**Test Criteria**: ✅ Game window displays correctly (800x600, 60 FPS, black background), ⏳ Pieces fall, stack at bottom, debug mode works for all features
+**Test Criteria**: ✅ Game window displays correctly (800x600, 60 FPS, black background), ✅ All 7 Tetrimino shapes implemented with proper rotations, collision detection, and piece placement working
 
 ---
 
@@ -152,11 +152,12 @@
 ---
 
 **Last Updated**: September 19, 2025
-**Current Milestone**: Milestone 1 - Basic Game Foundation (2/8 tasks complete)
+**Current Milestone**: Milestone 1 - Basic Game Foundation (3/8 tasks complete)
 **Total Milestones**: 6 (including multiplayer support)
 **Next Review**: After Milestone 1 completion
 
 ## Progress Log
 
 **Sep 19, 2025**: ✅ M1 Tasks 1-2 complete - Project structure + game window (8/8 tests passing)  
-**Next**: Task 3 - Implement 7 Tetrimino shapes
+**Sep 19, 2025 - Sep 20, 2025**: ✅ M1 Task 3 complete - All 7 Tetrimino shapes implemented with proper rotations, collision detection, piece placement, and comprehensive test coverage  
+**Next**: Task 4 - Add piece falling mechanics

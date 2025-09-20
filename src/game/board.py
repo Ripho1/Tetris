@@ -42,8 +42,9 @@ class Board:
         Create an empty board grid.
 
         Initializes all cells to None (empty).
+        Grid is organized as grid[x][y] where x is column (width) and y is row (height).
         """
-        self.grid = [[None for _ in range(self.width)] for _ in range(self.height)]
+        self.grid = [[None for _ in range(self.height)] for _ in range(self.width)]
 
     def is_valid_position(self, piece: Piece, dx: int = 0, dy: int = 0) -> bool:
         """
@@ -60,13 +61,19 @@ class Board:
         Checks for:
         - Board boundaries
         - Collision with existing pieces
-
-        TODO: Implement collision detection logic.
         """
-        # Test position would be piece.x + dx, piece.y + dy
-        # Get all cells the piece would occupy
-        # Check each cell is within bounds and empty
-        pass
+
+        for x, y in piece.get_cells():
+            new_x = x + dx
+            new_y = y + dy
+
+            if new_x < 0 or new_x >= self.width or new_y < 0 or new_y >= self.height:
+                return False
+
+            if self.grid[new_x][new_y] is not None:
+                return False
+
+        return True
 
     def place_piece(self, piece: Piece):
         """
@@ -77,12 +84,12 @@ class Board:
 
         Sets the board cells to the piece's color.
         Should only be called after validating position.
-
-        TODO: Implement piece placement logic.
         """
         # Get all cells the piece occupies
-        # Set those board cells to the piece's color
-        pass
+        if not self.is_valid_position(piece):
+            raise ValueError("Invalid position: out of bounds or overlap")
+        for x, y in piece.get_cells():
+            self.set_cell(x, y, piece.color)
 
     def clear_completed_lines(self) -> int:
         """
@@ -93,14 +100,24 @@ class Board:
 
         A line is complete when all cells in a row are filled.
         After clearing, rows above fall down to fill the gaps.
-
-        TODO: Implement line detection and clearing.
         """
-        # Find all complete rows (no None values)
-        # Remove complete rows
-        # Add empty rows at the top
-        # Return count of cleared lines
-        pass
+        completed_rows = [y for y in range(self.height) if self.is_line_complete(y)]
+
+        if not completed_rows:
+            return 0
+
+        completed_set = set(completed_rows)
+
+        # Rebuild each column by filtering out completed rows
+        for x in range(self.width):
+            new_column = [
+                self.grid[x][y] for y in range(self.height) if y not in completed_set
+            ]
+            # Add empty cells at the top
+            new_column = [None] * len(completed_rows) + new_column
+            self.grid[x] = new_column
+
+        return len(completed_rows)
 
     def is_line_complete(self, row: int) -> bool:
         """
@@ -112,7 +129,9 @@ class Board:
         Returns:
             True if row is complete, False otherwise
         """
-        return all(cell is not None for cell in self.grid[row])
+        full_row = [self.grid[x][row] for x in range(self.width)]
+
+        return all(cell is not None for cell in full_row)
 
     def get_cell(self, x: int, y: int) -> Optional[Tuple[int, int, int]]:
         """
@@ -127,7 +146,7 @@ class Board:
             Returns None for out-of-bounds coordinates
         """
         if 0 <= x < self.width and 0 <= y < self.height:
-            return self.grid[y][x]
+            return self.grid[x][y]
         return None
 
     def set_cell(self, x: int, y: int, color: Optional[Tuple[int, int, int]]):
@@ -140,7 +159,7 @@ class Board:
             color: RGB color tuple or None for empty
         """
         if 0 <= x < self.width and 0 <= y < self.height:
-            self.grid[y][x] = color
+            self.grid[x][y] = color
 
     def is_game_over(self) -> bool:
         """
@@ -150,11 +169,10 @@ class Board:
             True if pieces have reached the top of the board
 
         Game over occurs when the spawn area is blocked.
-        TODO: Implement game over detection.
         """
-        # Check if top rows have any filled cells
-        # indicating pieces have stacked too high
-        pass
+        top_row = [self.grid[x][0] for x in range(self.width)]
+
+        return any(cell is not None for cell in top_row)
 
     def clear_board(self):
         """
