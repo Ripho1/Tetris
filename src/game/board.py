@@ -158,9 +158,8 @@ class Board:
             y: Row index
             color: RGB color tuple or None for empty
         """
-        if not (0 <= x < self.width and 0 <= y < self.height):
-            raise IndexError(f"set_cell out of bounds: ({x}, {y})")
-        self.grid[x][y] = color
+        if 0 <= x < self.width and 0 <= y < self.height:
+            self.grid[x][y] = color
 
     def is_game_over(self) -> bool:
         """
