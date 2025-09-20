@@ -105,14 +105,20 @@ class Board:
         A line is complete when all cells in a row are filled.
         After clearing, rows above fall down to fill the gaps.
         """
-        completed = [(y, self.is_line_complete(y)) for y in range(self.height)]
-        completed_rows = [y for y, complete in completed if complete]
-
-        for y in completed_rows:
-            for x in range(self.width):
-                self.grid[x].pop(y)
-                self.grid[x].insert(0, None)
-
+        completed_rows = [y for y in range(self.height) if self.is_line_complete(y)]
+        
+        if not completed_rows:
+            return 0
+        
+        completed_set = set(completed_rows)
+        
+        # Rebuild each column by filtering out completed rows
+        for x in range(self.width):
+            new_column = [self.grid[x][y] for y in range(self.height) if y not in completed_set]
+            # Add empty cells at the top
+            new_column = [None] * len(completed_rows) + new_column
+            self.grid[x] = new_column
+        
         return len(completed_rows)
 
     def is_line_complete(self, row: int) -> bool:
