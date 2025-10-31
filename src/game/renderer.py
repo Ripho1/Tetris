@@ -221,8 +221,7 @@ class Renderer:
         Render the next piece preview.
 
         Displays a small preview of the upcoming piece in a configurable location.
-        The preview location can be set to any of the four corners of the screen
-        via settings.renderer.NEXT_PIECE_LOCATION.
+        The preview location is controlled by settings.renderer.NEXT_PREVIEW_POSITION.
 
         Args:
             piece: The next piece to preview
