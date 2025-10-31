@@ -67,15 +67,22 @@ This project implements the classic Tetris puzzle game with falling geometric sh
 
 ## 🎯 Controls
 
-### Basic Controls (Planned)
+### Basic Controls
 - **Move Left/Right**: Arrow keys or A/D
 - **Rotate**: Up arrow or W
 - **Soft Drop**: Down arrow or S
 - **Hard Drop**: Space bar
-- **Hold**: Shift key
+- **Pause**: P (shows a semi-transparent "Paused" overlay with restart/quit)
+- **Restart**: R
+- **Quit**: ESC
 
-### Debug Controls (Planned)
-- Full piece control system for testing and development
+### Debug Controls
+- **Toggle Debug Mode**: F1 (enables all debug actions and shows info overlay)
+- **Step Fall**: F2 (advance one fall step, works while paused)
+- **Cycle Active Piece**: F3 (switches to next piece type at spawn if valid)
+- **Select Row**: Up/Down while paused (choose a row to clear)
+- **Clear Selected Row**: L or Delete
+- **Clear Placed Piece**: Left-click a filled cell
 
 ## 🏗️ Project Structure
 

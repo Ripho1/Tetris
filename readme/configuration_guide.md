@@ -14,36 +14,38 @@ All game settings are centralized in `src/config/settings.py`. This file organiz
 
 ## Common Customizations
 
-### Next Piece Preview Location
+### Next Piece Preview Position
 
-The next piece preview can be displayed in any of the four corners of the screen.
+The next piece preview is positioned using absolute pixel coordinates.
 
-**Configuration Setting**: `settings.renderer.NEXT_PIECE_LOCATION`
+**Configuration Setting**: `settings.renderer.NEXT_PREVIEW_POSITION`
 
-**Available Options**:
-- `"top-right"` - Upper right corner (default)
-- `"top-left"` - Upper left corner
-- `"bottom-right"` - Lower right corner
-- `"bottom-left"` - Lower left corner
+**Type**: `(x, y)` tuple representing the top-left of the preview box.
 
 **How to Change**:
 
 1. Open `src/config/settings.py`
 2. Find the `Renderer` class
-3. Change the `NEXT_PIECE_LOCATION` value:
+3. Set `NEXT_PREVIEW_POSITION` to the desired `(x, y)` tuple:
 
 ```python
 class Renderer:
     # ... other settings ...
-    
-    # Change from "top-right" to your preferred location
-    NEXT_PIECE_LOCATION = "top-left"  # Or "bottom-right", "bottom-left"
+
+    # Example: top-right corner (default)
+    NEXT_PREVIEW_POSITION = (
+        Dimensions.SCREEN_WIDTH - PREVIEW_BOX_SIZE - PREVIEW_MARGIN,
+        FONT_SIZE + PREVIEW_LABEL_MARGIN,
+    )
 ```
+
+
 
 **Additional Preview Settings**:
 ```python
-PREVIEW_BOX_SIZE = 100  # Size of the preview box (pixels)
-PREVIEW_MARGIN = 20     # Distance from screen edges (pixels)
+PREVIEW_BOX_SIZE = 100       # Size of the preview box (pixels)
+PREVIEW_MARGIN = 20          # Distance from screen edges (pixels)
+PREVIEW_LABEL_MARGIN = 8     # Spacing between label and preview box (pixels)
 ```
 
 ### Game Speed
@@ -124,7 +126,27 @@ class Input:
     PAUSE_KEYS = [pygame.K_p]
     RESET_KEYS = [pygame.K_r]
     QUIT_KEYS = [pygame.K_ESCAPE]
+
+    # Debug
+    DEBUG_TOGGLE_KEYS = [pygame.K_F1]
+    DEBUG_STEP_KEYS = [pygame.K_F2]
+    DEBUG_CYCLE_PIECE_KEYS = [pygame.K_F3]
+    DEBUG_CLEAR_ROW_KEYS = [pygame.K_l, pygame.K_DELETE]
+    DEBUG_SELECT_ROW_UP_KEYS = [pygame.K_UP]
+    DEBUG_SELECT_ROW_DOWN_KEYS = [pygame.K_DOWN]
 ```
+
+### Debug Mode
+
+Enable or disable debug mode at runtime with the configured toggle key (default F1). When enabled, an on-screen debug overlay shows runtime info (FPS, score/level/lines, fall interval, current/next pieces). Additional debug helpers:
+
+- `DEBUG_STEP_KEYS` (default F2): advance one fall step (works while paused)
+- `DEBUG_CYCLE_PIECE_KEYS` (default F3): switch the active piece to the next type at spawn if valid
+- `DEBUG_SELECT_ROW_UP_KEYS`/`DEBUG_SELECT_ROW_DOWN_KEYS` (default Up/Down): select a row to clear (recommended while paused)
+- `DEBUG_CLEAR_ROW_KEYS` (default L or Delete): clear the selected row (no scoring)
+- Mouse left-click on a filled cell: clear that contiguous placed piece (no scoring)
+
+You can change these bindings in the `Input` section above.
 
 **Example - Add More Keys**:
 ```python

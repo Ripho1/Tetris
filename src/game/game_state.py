@@ -8,10 +8,9 @@ This module manages the overall game state including:
 - Game over detection
 """
 
-import time
-from typing import Optional
+from typing import Optional, Dict, Tuple, List
 from src.game.board import Board
-from src.game.piece import Piece
+from src.game.piece import Piece, PieceType
 from src.game.piece_factory import PieceFactory
 from src.config.settings import settings
 
@@ -50,6 +49,8 @@ class GameState:
         # Game state flags
         self.game_over = False
         self.paused = False
+        self.debug_mode: bool = False
+        self.debug_selected_row: Optional[int] = None
 
         # Spawn the first piece
         self._spawn_next_piece()
@@ -295,3 +296,172 @@ class GameState:
             "active_piece": self.active_piece,
             "next_piece": self.next_piece,
         }
+
+    # -------------------- Debug helpers --------------------
+    def get_debug_info(self) -> Dict[str, object]:
+        """
+        Collect debug information for on-screen display.
+
+        Returns:
+            Dictionary with key runtime values useful for debugging.
+        """
+        active_type = (
+            self.active_piece.piece_type.value
+            if self.active_piece is not None
+            else None
+        )
+        next_type = (
+            self.next_piece.piece_type.value if self.next_piece is not None else None
+        )
+        active_pos: Optional[Tuple[int, int]] = (
+            (self.active_piece.x, self.active_piece.y) if self.active_piece else None
+        )
+        active_rot = self.active_piece.rotation if self.active_piece else None
+
+        return {
+            "debug_mode": self.debug_mode,
+            "score": self.score,
+            "level": self.level,
+            "lines_cleared": self.lines_cleared,
+            "fall_interval": self.fall_interval,
+            "game_over": self.game_over,
+            "paused": self.paused,
+            "active_type": active_type,
+            "active_pos": active_pos,
+            "active_rotation": active_rot,
+            "next_type": next_type,
+            "board_size": (self.board.width, self.board.height),
+            "selected_row": self.debug_selected_row,
+        }
+
+    def debug_step_fall(self) -> bool:
+        """
+        Advance a single fall step regardless of pause state.
+
+        Returns:
+            True if a step occurred, False otherwise.
+        """
+        if self.game_over or self.active_piece is None:
+            return False
+
+        # Perform one fall attempt without using timers
+        if self.board.is_valid_position(self.active_piece, dy=1):
+            self.active_piece.move(0, 1)
+        else:
+            self._place_piece()
+        return True
+
+    def debug_cycle_active_piece(self) -> bool:
+        """
+        Cycle the active piece to the next type at spawn position.
+
+        Returns:
+            True if piece changed, False otherwise.
+        """
+        if self.game_over:
+            return False
+
+        piece_types = list(PieceType)
+
+        # Determine next type
+        if self.active_piece is None:
+            next_type = piece_types[0]
+        else:
+            try:
+                idx = piece_types.index(self.active_piece.piece_type)
+                next_type = piece_types[(idx + 1) % len(piece_types)]
+            except ValueError:
+                next_type = piece_types[0]
+
+        candidate = self.piece_factory.create_piece(next_type)
+
+        # Only switch if valid at spawn to avoid unintended game over
+        if self.board.is_valid_position(candidate):
+            self.active_piece = candidate
+            return True
+
+        return False
+
+    def debug_select_row(self, delta: int) -> int:
+        """
+        Select a board row for clearing by adjusting the current selection.
+
+        Args:
+            delta: Change in row index (negative moves up, positive moves down)
+
+        Returns:
+            The resulting selected row index.
+        """
+        if self.game_over:
+            return -1
+
+        max_row = self.board.height - 1
+        if self.debug_selected_row is None:
+            self.debug_selected_row = 0
+
+        self.debug_selected_row = max(0, min(max_row, self.debug_selected_row + delta))
+        return self.debug_selected_row
+
+    def debug_clear_row(self) -> bool:
+        """
+        Clear all cells in the currently selected row.
+
+        Returns:
+            True if a row was cleared, False otherwise.
+        Note:
+            This does not affect scoring/lines and does not apply gravity.
+        """
+        if self.debug_selected_row is None or self.game_over:
+            return False
+
+        row = self.debug_selected_row
+        for x in range(self.board.width):
+            self.board.set_cell(x, row, None)
+        return True
+
+    def debug_clear_piece_at(self, x: int, y: int) -> bool:
+        """
+        Clear the contiguous placed piece region at board coordinates (x, y).
+
+        Returns:
+            True if any cells were cleared, False otherwise.
+        Note:
+            Operates only on placed blocks (board grid), not the active piece.
+        """
+        if self.game_over:
+            return False
+
+        target_color = self.board.get_cell(x, y)
+        if target_color is None:
+            return False
+
+        width = self.board.width
+        height = self.board.height
+
+        stack: List[Tuple[int, int]] = [(x, y)]
+        visited = set()
+        cleared = 0
+
+        while stack:
+            cx, cy = stack.pop()
+            if (cx, cy) in visited:
+                continue
+            visited.add((cx, cy))
+
+            if not (0 <= cx < width and 0 <= cy < height):
+                continue
+
+            if self.board.get_cell(cx, cy) != target_color:
+                continue
+
+            # Clear this cell
+            self.board.set_cell(cx, cy, None)
+            cleared += 1
+
+            # Add neighbors (4-directional)
+            stack.append((cx - 1, cy))
+            stack.append((cx + 1, cy))
+            stack.append((cx, cy - 1))
+            stack.append((cx, cy + 1))
+
+        return cleared > 0
