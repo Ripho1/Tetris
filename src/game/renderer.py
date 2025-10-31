@@ -359,3 +359,101 @@ class Renderer:
         Clear the entire screen with black background.
         """
         self.screen.fill(settings.colors.BLACK)
+
+    # -------------------- Overlays --------------------
+    def render_paused(self):
+        """
+        Render the paused screen overlay.
+
+        Displays a semi-transparent overlay with "Paused" and the same
+        instructions as the game over screen (restart/quit).
+        """
+        # Semi-transparent overlay
+        overlay = pygame.Surface(
+            (settings.dimensions.SCREEN_WIDTH, settings.dimensions.SCREEN_HEIGHT)
+        )
+        overlay.set_alpha(140)
+        overlay.fill(settings.colors.BLACK)
+        self.screen.blit(overlay, (0, 0))
+
+        # Title
+        title_text = self.large_font.render("Paused", True, settings.colors.LIGHT_GRAY)
+        title_rect = title_text.get_rect(
+            center=(
+                settings.dimensions.SCREEN_WIDTH // 2,
+                settings.dimensions.SCREEN_HEIGHT // 2 - 80,
+            )
+        )
+        self.screen.blit(title_text, title_rect)
+
+        # Restart instruction
+        restart_text = self.font.render(
+            "Press R to Restart", True, settings.colors.LIGHT_GRAY
+        )
+        restart_rect = restart_text.get_rect(
+            center=(
+                settings.dimensions.SCREEN_WIDTH // 2,
+                settings.dimensions.SCREEN_HEIGHT // 2 - 30,
+            )
+        )
+        self.screen.blit(restart_text, restart_rect)
+
+        # Quit instruction
+        quit_text = self.font.render(
+            "Press ESC to Quit", True, settings.colors.LIGHT_GRAY
+        )
+        quit_rect = quit_text.get_rect(
+            center=(
+                settings.dimensions.SCREEN_WIDTH // 2,
+                settings.dimensions.SCREEN_HEIGHT // 2 + 0,
+            )
+        )
+        self.screen.blit(quit_text, quit_rect)
+
+    def render_debug_info(self, info: dict, fps: float = 0.0):
+        """
+        Render a small debug info block on screen.
+
+        Args:
+            info: Dictionary returned from GameState.get_debug_info()
+            fps: Current frames per second for reference
+        """
+        lines = [
+            f"DEBUG: {'ON' if info.get('debug_mode') else 'OFF'}",
+            f"FPS: {fps:.1f}",
+            f"Score: {info.get('score')}  Level: {info.get('level')}  Lines: {info.get('lines_cleared')}",
+            f"Fall: {info.get('fall_interval'):.3f}s  Paused: {info.get('paused')}  Over: {info.get('game_over')}",
+            f"Active: {info.get('active_type')} pos={info.get('active_pos')} rot={info.get('active_rotation')}",
+            f"Next: {info.get('next_type')}  Board: {info.get('board_size')}",
+        ]
+
+        x = 10
+        y = 110  # placed below standard UI lines
+        line_height = self.font.get_height() + 2
+
+        for i, text in enumerate(lines):
+            surf = self.font.render(str(text), True, settings.colors.LIGHT_GRAY)
+            self.screen.blit(surf, (x, y + i * line_height))
+
+    def render_debug_row_highlight(self, row: int):
+        """
+        Highlight a specific board row for debug selection.
+
+        Args:
+            row: Row index to highlight (0-based)
+        """
+        if not (0 <= row < settings.dimensions.BOARD_HEIGHT):
+            return
+
+        highlight = pygame.Surface(
+            (settings.dimensions.BOARD_WIDTH * self.cell_size, self.cell_size)
+        )
+        highlight.set_alpha(60)
+        highlight.fill(settings.colors.LIGHT_GRAY)
+        self.screen.blit(
+            highlight,
+            (
+                self.board_offset_x,
+                self.board_offset_y + row * self.cell_size,
+            ),
+        )

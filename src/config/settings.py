@@ -116,6 +116,15 @@ class Input:
     RESET_KEYS = [pygame.K_r]
     QUIT_KEYS = [pygame.K_ESCAPE]
 
+    # Debug keys
+    DEBUG_TOGGLE_KEYS = [pygame.K_F1]
+    DEBUG_STEP_KEYS = [pygame.K_F2]
+    DEBUG_CYCLE_PIECE_KEYS = [pygame.K_F3]
+    DEBUG_CLEAR_ROW_KEYS = [pygame.K_l, pygame.K_DELETE]
+    # Row selection uses existing arrows; handled only in paused+debug
+    DEBUG_SELECT_ROW_UP_KEYS = [pygame.K_UP]
+    DEBUG_SELECT_ROW_DOWN_KEYS = [pygame.K_DOWN]
+
 
 # Create settings object with nested configuration
 class Settings:

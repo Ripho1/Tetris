@@ -13,11 +13,12 @@
 - [x] Add piece falling mechanics
 - [x] Basic collision detection (bottom and sides)
 - [x] Piece placement and stacking
-- [ ] **Debug Mode**: Full control system for testing
-  - [ ] Skip any upcoming piece
-  - [ ] Generate and place any piece in legal positions
-  - [ ] Clear any existing piece or line
-  - [ ] Toggle between debug and normal play
+- [x] **Debug Mode**: Full control system for testing
+  - [x] Toggle between debug and normal play (F1)
+  - [x] Step fall while paused (F2)
+  - [x] Cycle active piece type at spawn (F3)
+  - [x] Clear line
+  
 
 **Test Criteria**: ✅ Game window displays correctly (800x600, 60 FPS, black background), ✅ All 7 Tetrimino shapes implemented with proper rotations, ✅ Collision detection working, ✅ Piece placement and falling mechanics complete with next piece preview and game over screen
 
@@ -91,6 +92,7 @@
   - [ ] Fullscreen mode support
 - [ ] Performance optimization
 - [ ] Code cleanup and documentation
+ - [ ] Debug: Generate and place any piece in legal positions
 
 **Test Criteria**: Game runs smoothly, all features work, code is well-documented, controls customizable, responsive on different resolutions
 
@@ -152,13 +154,13 @@
 ---
 
 **Last Updated**: October 31, 2025
-**Current Milestone**: Milestone 1 - Basic Game Foundation (6/8 tasks complete)
+**Current Milestone**: Milestone 1 - Basic Game Foundation (completed)
 **Total Milestones**: 6 (including multiplayer support)
-**Next Review**: After Milestone 1 completion (Debug Mode remaining)
+**Next Review**: Kickoff Milestone 2 (Core Gameplay)
 
 ## Progress Log
 
 **Sep 19, 2025**: ✅ M1 Tasks 1-2 complete - Project structure + game window (8/8 tests passing)  
 **Sep 19, 2025 - Sep 20, 2025**: ✅ M1 Task 3 complete - All 7 Tetrimino shapes implemented with proper rotations, collision detection, piece placement, and comprehensive test coverage  
 **Oct 31, 2025**: ✅ M1 Task 4-6 complete - Piece falling mechanics, collision detection, and piece placement/stacking with next piece preview and game over screen (118/118 tests passing)  
-**Next**: Tasks 7-8 - Debug mode controls for testing
+**Oct 31, 2025**: ✅ M1 Task 7 completed - Debug mode includes toggle, step fall, cycle piece, and clear line. "Generate and place any piece" moved to Milestone 5; skip removed.

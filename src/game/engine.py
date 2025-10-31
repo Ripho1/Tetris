@@ -61,6 +61,22 @@ class GameEngine:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
                 self._handle_key_press(event.key)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # Debug-only: clear placed piece by clicking a filled cell
+                if self.game_state.debug_mode and event.button == 1:  # left click
+                    mouse_x, mouse_y = event.pos
+                    # Convert to board coordinates
+                    bx = (
+                        mouse_x - self.renderer.board_offset_x
+                    ) // self.renderer.cell_size
+                    by = (
+                        mouse_y - self.renderer.board_offset_y
+                    ) // self.renderer.cell_size
+                    if (
+                        0 <= bx < settings.dimensions.BOARD_WIDTH
+                        and 0 <= by < settings.dimensions.BOARD_HEIGHT
+                    ):
+                        self.game_state.debug_clear_piece_at(int(bx), int(by))
 
     def _handle_key_press(self, key):
         """
@@ -77,6 +93,34 @@ class GameEngine:
         elif key in settings.input.RESET_KEYS:
             # Reset game (for testing)
             self.game_state.reset_game()
+        elif key in settings.input.DEBUG_TOGGLE_KEYS:
+            # Toggle debug mode
+            self.game_state.debug_mode = not self.game_state.debug_mode
+        elif self.game_state.debug_mode and key in settings.input.DEBUG_STEP_KEYS:
+            # Advance one fall step even when paused
+            self.game_state.debug_step_fall()
+        elif (
+            self.game_state.debug_mode and key in settings.input.DEBUG_CYCLE_PIECE_KEYS
+        ):
+            # Cycle active piece type
+            self.game_state.debug_cycle_active_piece()
+        elif (
+            self.game_state.debug_mode
+            and self.game_state.paused
+            and key in settings.input.DEBUG_SELECT_ROW_UP_KEYS
+        ):
+            # Move selected row up
+            self.game_state.debug_select_row(-1)
+        elif (
+            self.game_state.debug_mode
+            and self.game_state.paused
+            and key in settings.input.DEBUG_SELECT_ROW_DOWN_KEYS
+        ):
+            # Move selected row down
+            self.game_state.debug_select_row(1)
+        elif self.game_state.debug_mode and key in settings.input.DEBUG_CLEAR_ROW_KEYS:
+            # Clear currently selected row
+            self.game_state.debug_clear_row()
         elif not self.game_state.game_over and not self.game_state.paused:
             # Game controls (only when playing)
             self._handle_game_controls(key)
@@ -151,6 +195,23 @@ class GameEngine:
             lines=game_info["lines_cleared"],
             next_piece=game_info["next_piece"],
         )
+
+        # Render paused overlay (if paused and not over)
+        if self.game_state.paused and not self.game_state.game_over:
+            self.renderer.render_paused()
+
+        # Render debug helpers if enabled
+        if self.game_state.debug_mode:
+            # Highlight selected row if any
+            if self.game_state.debug_selected_row is not None:
+                self.renderer.render_debug_row_highlight(
+                    self.game_state.debug_selected_row
+                )
+
+            # Debug info overlay
+            self.renderer.render_debug_info(
+                self.game_state.get_debug_info(), fps=self.clock.get_fps()
+            )
 
         # Render game over screen if needed
         if self.game_state.game_over:

@@ -126,7 +126,27 @@ class Input:
     PAUSE_KEYS = [pygame.K_p]
     RESET_KEYS = [pygame.K_r]
     QUIT_KEYS = [pygame.K_ESCAPE]
+
+    # Debug
+    DEBUG_TOGGLE_KEYS = [pygame.K_F1]
+    DEBUG_STEP_KEYS = [pygame.K_F2]
+    DEBUG_CYCLE_PIECE_KEYS = [pygame.K_F3]
+    DEBUG_CLEAR_ROW_KEYS = [pygame.K_l, pygame.K_DELETE]
+    DEBUG_SELECT_ROW_UP_KEYS = [pygame.K_UP]
+    DEBUG_SELECT_ROW_DOWN_KEYS = [pygame.K_DOWN]
 ```
+
+### Debug Mode
+
+Enable or disable debug mode at runtime with the configured toggle key (default F1). When enabled, an on-screen debug overlay shows runtime info (FPS, score/level/lines, fall interval, current/next pieces). Additional debug helpers:
+
+- `DEBUG_STEP_KEYS` (default F2): advance one fall step (works while paused)
+- `DEBUG_CYCLE_PIECE_KEYS` (default F3): switch the active piece to the next type at spawn if valid
+- `DEBUG_SELECT_ROW_UP_KEYS`/`DEBUG_SELECT_ROW_DOWN_KEYS` (default Up/Down): select a row to clear (recommended while paused)
+- `DEBUG_CLEAR_ROW_KEYS` (default L or Delete): clear the selected row (no scoring)
+- Mouse left-click on a filled cell: clear that contiguous placed piece (no scoring)
+
+You can change these bindings in the `Input` section above.
 
 **Example - Add More Keys**:
 ```python

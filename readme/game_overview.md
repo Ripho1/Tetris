@@ -51,6 +51,11 @@ Seven distinct shapes, each made of 4 connected squares:
 - **Condition**: Stack reaches the top of the playing field
 - **Result**: New pieces can't enter, game ends
 
+#### Pause
+- **Toggling**: Press P to pause/unpause
+- **Presentation**: A semi-transparent overlay appears with the title "Paused"
+- **Menu**: Shows the same restart/quit hints as the game over screen
+
 ## Key Features for Implementation
 
 ### Essential Features
