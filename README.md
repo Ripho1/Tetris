@@ -31,10 +31,27 @@ This project implements the classic Tetris puzzle game with falling geometric sh
    cd Tetris
    ```
 
-2. **Install dependencies**
+2. **Activate the virtual environment**
+   
+   **Windows (Git Bash/PowerShell):**
    ```bash
-   pip install -r requirements.txt
+   source .venv/Scripts/activate
    ```
+   
+   **Windows (Command Prompt):**
+   ```cmd
+   .venv\Scripts\activate.bat
+   ```
+   
+   **Linux/Mac:**
+   ```bash
+   source .venv/bin/activate
+   ```
+   
+   > **Note**: If you don't have the virtual environment set up yet, install dependencies first:
+   > ```bash
+   > pip install -r requirements.txt
+   > ```
 
 3. **Run the game**
    ```bash
@@ -69,6 +86,11 @@ See [Project Structure](readme/project_structure.md) for detailed information ab
 The project includes comprehensive testing with pytest:
 
 ```bash
+# Activate virtual environment first
+source .venv/Scripts/activate  # Windows Git Bash/PowerShell
+# .venv\Scripts\activate.bat   # Windows Command Prompt
+# source .venv/bin/activate     # Linux/Mac
+
 # Run all tests
 pytest
 
@@ -77,11 +99,12 @@ pytest --cov=src
 
 # Run specific test file
 pytest tests/test_piece.py
+
+# Or use the convenient command
+python commands.py test
 ```
 
 ## 📋 Development Status
-
-**Current Milestone**: Milestone 1 - Basic Game Foundation (3/8 tasks complete)
 
 See [Development Plan](readme/development_plan.md) for detailed milestone information.
 
@@ -106,6 +129,7 @@ This project follows strict development standards:
 - [Game Overview](readme/game_overview.md) - Detailed game mechanics and rules
 - [Development Plan](readme/development_plan.md) - Complete development roadmap
 - [Project Structure](readme/project_structure.md) - Additional documentation files
+- [Configuration Guide](readme/configuration_guide.md) - How to customize game settings
 
 ## 🎮 Game Rules
 
