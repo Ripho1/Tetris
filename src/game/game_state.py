@@ -58,11 +58,17 @@ class GameState:
         """
         Calculate the fall interval based on current level.
 
+        The fall interval determines how fast pieces drop. Each level increases
+        the speed by reducing the interval between automatic piece falls.
+        The interval has a minimum value to prevent impossibly fast gameplay.
+
         Returns:
             Time in seconds between piece falls
+
+        Formula:
+            interval = BASE_FALL_INTERVAL - (level - 1) * SPEED_INCREASE_FACTOR
+            Capped at MIN_FALL_INTERVAL for playability
         """
-        # TODO: Implement level-based speed calculation
-        # Higher levels should have faster falling pieces
         base_interval = settings.gameplay.BASE_FALL_INTERVAL
         speed_increase = (self.level - 1) * settings.gameplay.SPEED_INCREASE_FACTOR
         return max(settings.gameplay.MIN_FALL_INTERVAL, base_interval - speed_increase)

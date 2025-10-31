@@ -67,6 +67,14 @@ class Renderer:
     LEVEL_POSITION = (10, 40)
     LINES_POSITION = (10, 70)
 
+    # Next piece preview settings
+    PREVIEW_BOX_SIZE = 100  # Size of the preview box in pixels
+    PREVIEW_MARGIN = 20  # Margin from screen edges
+
+    # Next piece preview location
+    # Options: "top-right", "top-left", "bottom-right", "bottom-left"
+    NEXT_PIECE_LOCATION = "top-right"
+
 
 class Gameplay:
     """Constants for gameplay mechanics."""

@@ -220,23 +220,176 @@ class Renderer:
         """
         Render the next piece preview.
 
+        Displays a small preview of the upcoming piece in a configurable location.
+        The preview location can be set to any of the four corners of the screen
+        via settings.renderer.NEXT_PIECE_LOCATION.
+
         Args:
             piece: The next piece to preview
         """
-        # TODO: Implement next piece preview rendering
-        # This will show a small preview of the upcoming piece
-        pass
+        if piece is None:
+            return
+
+        # Calculate preview position based on configuration
+        preview_x, preview_y = self._calculate_preview_position()
+
+        # Draw "Next" label above the preview box
+        next_label = self.font.render("Next:", True, settings.colors.WHITE)
+        label_y_offset = -30 if "top" in settings.renderer.NEXT_PIECE_LOCATION else 30
+        self.screen.blit(next_label, (preview_x, preview_y + label_y_offset))
+
+        # Draw preview box background
+        preview_box_size = settings.renderer.PREVIEW_BOX_SIZE
+        preview_box = pygame.Rect(
+            preview_x, preview_y, preview_box_size, preview_box_size
+        )
+        pygame.draw.rect(self.screen, settings.colors.GRAY, preview_box, 1)
+
+        # Get piece cells (relative to piece position)
+        piece_cells = piece.get_cells()
+
+        if not piece_cells:
+            return
+
+        # Calculate bounding box of the piece to center it
+        min_x = min(x for x, y in piece_cells)
+        max_x = max(x for x, y in piece_cells)
+        min_y = min(y for x, y in piece_cells)
+        max_y = max(y for x, y in piece_cells)
+
+        piece_width = max_x - min_x + 1
+        piece_height = max_y - min_y + 1
+
+        # Scale for preview (smaller cells)
+        preview_cell_size = min(
+            20, preview_box_size // max(piece_width, piece_height, 4)
+        )
+
+        # Calculate centering offset
+        piece_pixel_width = piece_width * preview_cell_size
+        piece_pixel_height = piece_height * preview_cell_size
+        offset_x = preview_x + (preview_box_size - piece_pixel_width) // 2
+        offset_y = preview_y + (preview_box_size - piece_pixel_height) // 2
+
+        # Draw each cell of the piece
+        for cell_x, cell_y in piece_cells:
+            # Calculate position relative to piece bounds
+            rel_x = cell_x - min_x
+            rel_y = cell_y - min_y
+
+            # Draw the cell
+            cell_rect = pygame.Rect(
+                offset_x + rel_x * preview_cell_size + 1,
+                offset_y + rel_y * preview_cell_size + 1,
+                preview_cell_size - 2,
+                preview_cell_size - 2,
+            )
+            pygame.draw.rect(self.screen, piece.color, cell_rect)
+
+    def _calculate_preview_position(self) -> Tuple[int, int]:
+        """
+        Calculate the preview box position based on configuration.
+
+        Returns:
+            Tuple of (x, y) coordinates for the preview box top-left corner
+
+        The position is determined by settings.renderer.NEXT_PIECE_LOCATION:
+        - "top-right": Upper right corner
+        - "top-left": Upper left corner
+        - "bottom-right": Lower right corner
+        - "bottom-left": Lower left corner
+        """
+        location = settings.renderer.NEXT_PIECE_LOCATION
+        margin = settings.renderer.PREVIEW_MARGIN
+        box_size = settings.renderer.PREVIEW_BOX_SIZE
+
+        # Calculate base positions for each corner
+        if location == "top-right":
+            x = settings.dimensions.SCREEN_WIDTH - box_size - margin
+            y = margin + 30  # Extra space for label
+        elif location == "top-left":
+            x = margin
+            y = margin + 30  # Extra space for label
+        elif location == "bottom-right":
+            x = settings.dimensions.SCREEN_WIDTH - box_size - margin
+            y = (
+                settings.dimensions.SCREEN_HEIGHT - box_size - margin - 30
+            )  # Space for label below
+        elif location == "bottom-left":
+            x = margin
+            y = (
+                settings.dimensions.SCREEN_HEIGHT - box_size - margin - 30
+            )  # Space for label below
+        else:
+            # Default to top-right if invalid location
+            x = settings.dimensions.SCREEN_WIDTH - box_size - margin
+            y = margin + 30
+
+        return x, y
 
     def render_game_over(self, final_score: int):
         """
         Render the game over screen.
 
+        Displays a semi-transparent overlay with "GAME OVER" message,
+        final score, and instructions to restart or quit.
+
         Args:
             final_score: The final score achieved
         """
-        # TODO: Implement game over screen
-        # This will show game over message and final score
-        pass
+        # Create semi-transparent overlay
+        overlay = pygame.Surface(
+            (settings.dimensions.SCREEN_WIDTH, settings.dimensions.SCREEN_HEIGHT)
+        )
+        overlay.set_alpha(180)  # Semi-transparent (0=transparent, 255=opaque)
+        overlay.fill(settings.colors.BLACK)
+        self.screen.blit(overlay, (0, 0))
+
+        # Render "GAME OVER" text
+        game_over_text = self.large_font.render("GAME OVER", True, settings.colors.RED)
+        game_over_rect = game_over_text.get_rect(
+            center=(
+                settings.dimensions.SCREEN_WIDTH // 2,
+                settings.dimensions.SCREEN_HEIGHT // 2 - 60,
+            )
+        )
+        self.screen.blit(game_over_text, game_over_rect)
+
+        # Render final score
+        score_text = self.font.render(
+            f"Final Score: {final_score}", True, settings.colors.WHITE
+        )
+        score_rect = score_text.get_rect(
+            center=(
+                settings.dimensions.SCREEN_WIDTH // 2,
+                settings.dimensions.SCREEN_HEIGHT // 2,
+            )
+        )
+        self.screen.blit(score_text, score_rect)
+
+        # Render restart instructions
+        restart_text = self.font.render(
+            "Press R to Restart", True, settings.colors.LIGHT_GRAY
+        )
+        restart_rect = restart_text.get_rect(
+            center=(
+                settings.dimensions.SCREEN_WIDTH // 2,
+                settings.dimensions.SCREEN_HEIGHT // 2 + 40,
+            )
+        )
+        self.screen.blit(restart_text, restart_rect)
+
+        # Render quit instructions
+        quit_text = self.font.render(
+            "Press ESC to Quit", True, settings.colors.LIGHT_GRAY
+        )
+        quit_rect = quit_text.get_rect(
+            center=(
+                settings.dimensions.SCREEN_WIDTH // 2,
+                settings.dimensions.SCREEN_HEIGHT // 2 + 70,
+            )
+        )
+        self.screen.blit(quit_text, quit_rect)
 
     def clear_screen(self):
         """
