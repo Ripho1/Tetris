@@ -59,23 +59,14 @@ def test_spawn_next_piece(game_state):
 
 
 def test_piece_falling_timing(game_state):
-    """Test that pieces fall based on timing."""
-    # Mock time to control falling
-    with patch("time.time") as mock_time:
-        mock_time.return_value = 0
+    """Test that pieces fall based on accumulated delta_time."""
+    original_y = game_state.active_piece.y
 
-        # Initial state
-        original_y = game_state.active_piece.y
-        game_state.last_fall_time = 0
+    # Advance simulated time beyond fall interval
+    game_state.update(game_state.fall_interval + 0.1)
 
-        # Advance time beyond fall interval
-        mock_time.return_value = game_state.fall_interval + 0.1
-
-        # Update should cause piece to fall
-        game_state.update(0.1)
-
-        # Piece should have moved down
-        assert game_state.active_piece.y > original_y
+    # Piece should have moved down
+    assert game_state.active_piece.y > original_y
 
 
 def test_piece_landing_and_placement(game_state):
@@ -123,7 +114,6 @@ def test_score_calculation(game_state):
 
 def test_level_progression(game_state):
     """Test level progression based on lines cleared."""
-    original_level = game_state.level
 
     # Clear 10 lines to trigger level up
     game_state.lines_cleared = 10
@@ -176,20 +166,18 @@ def test_rotate_piece_invalid(game_state):
 
     # Try to rotate (might be invalid due to collision)
     success = game_state.rotate_piece(clockwise=True)
-    # Result depends on piece type and position
+    # At the bottom-right corner, rotation should be invalid
+    assert success is False
 
 
 def test_hard_drop(game_state):
-    """Test hard drop functionality."""
-    original_y = game_state.active_piece.y
+    """Test hard drop functionality locks and spawns next piece."""
+    original_piece = game_state.active_piece
 
-    # Hard drop should move piece to bottom
+    # Hard drop should lock the piece and spawn next piece
     success = game_state.hard_drop()
-    # Note: Hard drop might not move if piece is already at bottom
-    # or if there's no valid drop position
-    assert (
-        success is True or success is False
-    )  # Either is valid depending on piece position
+    assert success is True
+    assert game_state.active_piece is not original_piece
 
 
 def test_pause_game(game_state):

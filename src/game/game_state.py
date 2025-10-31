@@ -9,9 +9,9 @@ This module manages the overall game state including:
 """
 
 import time
-from typing import Optional, Tuple
+from typing import Optional
 from src.game.board import Board
-from src.game.piece import Piece, PieceType
+from src.game.piece import Piece
 from src.game.piece_factory import PieceFactory
 from src.config.settings import settings
 
@@ -43,9 +43,9 @@ class GameState:
         self.level = 1
         self.lines_cleared = 0
 
-        # Timing for piece falling
-        self.last_fall_time = time.time()
+        # Timing for piece falling (accumulates delta_time from engine)
         self.fall_interval = self._calculate_fall_interval()
+        self._fall_timer = 0.0
 
         # Game state flags
         self.game_over = False
@@ -108,12 +108,15 @@ class GameState:
         if self.game_over or self.paused:
             return
 
-        current_time = time.time()
-
-        # Check if it's time for the piece to fall
-        if current_time - self.last_fall_time >= self.fall_interval:
+        # Accumulate elapsed time and fall piece at intervals
+        self._fall_timer += max(0.0, float(delta_time))
+        while (
+            self._fall_timer >= self.fall_interval
+            and not self.game_over
+            and not self.paused
+        ):
             self._fall_piece()
-            self.last_fall_time = current_time
+            self._fall_timer -= self.fall_interval
 
     def _fall_piece(self):
         """
@@ -247,12 +250,12 @@ class GameState:
         while self.board.is_valid_position(self.active_piece, dy=drop_distance + 1):
             drop_distance += 1
 
+        # Move if possible, then always place the piece
         if drop_distance > 0:
             self.active_piece.move(0, drop_distance)
-            self._place_piece()
-            return True
 
-        return False
+        self._place_piece()
+        return True
 
     def pause_game(self):
         """
@@ -273,7 +276,7 @@ class GameState:
         self.game_over = False
         self.paused = False
         self.fall_interval = self._calculate_fall_interval()
-        self.last_fall_time = time.time()
+        self._fall_timer = 0.0
         self._spawn_next_piece()
 
     def get_game_info(self) -> dict:

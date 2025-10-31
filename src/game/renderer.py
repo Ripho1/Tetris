@@ -9,7 +9,7 @@ This module handles all rendering operations including:
 """
 
 import pygame
-from typing import Optional, List, Tuple
+from typing import Optional, Tuple
 from src.config.settings import settings
 from src.game.board import Board
 from src.game.piece import Piece

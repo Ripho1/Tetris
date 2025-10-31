@@ -106,10 +106,6 @@ python commands.py test
 
 ## 📋 Development Status
 
-**Current Milestone**: Milestone 1 - Basic Game Foundation (4/8 tasks complete)
-
-✅ **Latest Update**: Task 4 - Piece falling mechanism with next piece preview and game over screen complete!
-
 See [Development Plan](readme/development_plan.md) for detailed milestone information.
 
 ## 🛠️ Development
