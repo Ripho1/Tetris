@@ -29,12 +29,12 @@
 **Deliverable**: Fully functional basic Tetris
 
 #### Tasks:
-- [ ] Implement piece rotation (4 directions)
-- [ ] Add horizontal movement controls
-- [ ] Implement soft drop and hard drop
-- [ ] Create line detection algorithm
-- [ ] Add line clearing mechanics
-- [ ] Implement block falling after line clear
+- [x] Implement piece rotation (4 directions)
+- [x] Add horizontal movement controls
+- [x] Implement soft drop and hard drop
+- [x] Create line detection algorithm
+- [x] Add line clearing mechanics
+- [x] Implement block falling after line clear
 
 **Test Criteria**: Can move and rotate pieces, clear lines, blocks fall properly
 
@@ -45,12 +45,12 @@
 **Deliverable**: Complete Tetris game with progression
 
 #### Tasks:
-- [ ] Implement scoring system (single, double, triple, tetris)
-- [ ] Add level progression (every 10 lines)
-- [ ] Implement speed increase per level
-- [ ] Add game over detection
-- [ ] Create restart functionality
-- [ ] Add basic UI (score, level, lines display)
+- [x] Implement scoring system (single, double, triple, tetris)
+- [x] Add level progression (every 10 lines)
+- [x] Implement speed increase per level
+- [x] Add game over detection
+- [x] Create restart functionality
+- [x] Add basic UI (score, level, lines display)
 
 **Test Criteria**: Score increases correctly, speed increases with levels, game ends when stack reaches top
 
@@ -154,9 +154,9 @@
 ---
 
 **Last Updated**: October 31, 2025
-**Current Milestone**: Milestone 1 - Basic Game Foundation (completed)
+**Current Milestone**: Milestone 4 - Enhanced Features
 **Total Milestones**: 6 (including multiplayer support)
-**Next Review**: Kickoff Milestone 2 (Core Gameplay)
+**Next Review**: Milestone 4 scoping and prioritization
 
 ## Progress Log
 
@@ -164,3 +164,5 @@
 **Sep 19, 2025 - Sep 20, 2025**: ✅ M1 Task 3 complete - All 7 Tetrimino shapes implemented with proper rotations, collision detection, piece placement, and comprehensive test coverage  
 **Oct 31, 2025**: ✅ M1 Task 4-6 complete - Piece falling mechanics, collision detection, and piece placement/stacking with next piece preview and game over screen (118/118 tests passing)  
 **Oct 31, 2025**: ✅ M1 Task 7 completed - Debug mode includes toggle, step fall, cycle piece, and clear line. "Generate and place any piece" moved to Milestone 5; skip removed.
+**Oct 31, 2025**: ✅ Milestone 2 completed - Core gameplay: rotation, movement, soft/hard drop, line detection and clearing with gravity.
+**Oct 31, 2025**: ✅ Milestone 3 completed - Game systems: scoring, level progression with speed increase, game over detection, restart, and basic UI.
