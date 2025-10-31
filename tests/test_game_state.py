@@ -161,7 +161,11 @@ def test_rotate_piece_valid(game_state):
     # Rotate clockwise
     success = game_state.rotate_piece(clockwise=True)
     assert success is True
-    assert game_state.active_piece.rotation != original_rotation
+    # O-piece has only one rotation state; rotation is a valid no-op
+    if len(game_state.active_piece.shapes) == 1:
+        assert game_state.active_piece.rotation == original_rotation
+    else:
+        assert game_state.active_piece.rotation != original_rotation
 
 
 def test_rotate_piece_invalid(game_state):
