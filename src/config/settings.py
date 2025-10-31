@@ -70,10 +70,14 @@ class Renderer:
     # Next piece preview settings
     PREVIEW_BOX_SIZE = 100  # Size of the preview box in pixels
     PREVIEW_MARGIN = 20  # Margin from screen edges
+    PREVIEW_LABEL_MARGIN = 8  # Spacing between label and preview box
 
-    # Next piece preview location
-    # Options: "top-right", "top-left", "bottom-right", "bottom-left"
-    NEXT_PIECE_LOCATION = "top-right"
+    # Next piece preview absolute position (top-left of preview box)
+    # Default: top-right corner with margins
+    NEXT_PREVIEW_POSITION = (
+        Dimensions.SCREEN_WIDTH - PREVIEW_BOX_SIZE - PREVIEW_MARGIN,
+        FONT_SIZE + PREVIEW_LABEL_MARGIN,
+    )
 
 
 class Gameplay:

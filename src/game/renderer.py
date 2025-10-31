@@ -230,13 +230,18 @@ class Renderer:
         if piece is None:
             return
 
-        # Calculate preview position based on configuration
-        preview_x, preview_y = self._calculate_preview_position()
+        # Use configured absolute position (top-left of preview box)
+        preview_x, preview_y = settings.renderer.NEXT_PREVIEW_POSITION
 
-        # Draw "Next" label above the preview box
+        # Draw "Next" label above the preview box for all locations
         next_label = self.font.render("Next:", True, settings.colors.WHITE)
-        label_y_offset = -30 if "top" in settings.renderer.NEXT_PIECE_LOCATION else 30
-        self.screen.blit(next_label, (preview_x, preview_y + label_y_offset))
+        label_height = self.font.get_height()
+        label_margin = settings.renderer.PREVIEW_LABEL_MARGIN
+
+        # Always place label above the preview box
+        label_y = preview_y - label_height - label_margin
+
+        self.screen.blit(next_label, (preview_x, label_y))
 
         # Draw preview box background
         preview_box_size = settings.renderer.PREVIEW_BOX_SIZE
@@ -285,47 +290,6 @@ class Renderer:
                 preview_cell_size - 2,
             )
             pygame.draw.rect(self.screen, piece.color, cell_rect)
-
-    def _calculate_preview_position(self) -> Tuple[int, int]:
-        """
-        Calculate the preview box position based on configuration.
-
-        Returns:
-            Tuple of (x, y) coordinates for the preview box top-left corner
-
-        The position is determined by settings.renderer.NEXT_PIECE_LOCATION:
-        - "top-right": Upper right corner
-        - "top-left": Upper left corner
-        - "bottom-right": Lower right corner
-        - "bottom-left": Lower left corner
-        """
-        location = settings.renderer.NEXT_PIECE_LOCATION
-        margin = settings.renderer.PREVIEW_MARGIN
-        box_size = settings.renderer.PREVIEW_BOX_SIZE
-
-        # Calculate base positions for each corner
-        if location == "top-right":
-            x = settings.dimensions.SCREEN_WIDTH - box_size - margin
-            y = margin + 30  # Extra space for label
-        elif location == "top-left":
-            x = margin
-            y = margin + 30  # Extra space for label
-        elif location == "bottom-right":
-            x = settings.dimensions.SCREEN_WIDTH - box_size - margin
-            y = (
-                settings.dimensions.SCREEN_HEIGHT - box_size - margin - 30
-            )  # Space for label below
-        elif location == "bottom-left":
-            x = margin
-            y = (
-                settings.dimensions.SCREEN_HEIGHT - box_size - margin - 30
-            )  # Space for label below
-        else:
-            # Default to top-right if invalid location
-            x = settings.dimensions.SCREEN_WIDTH - box_size - margin
-            y = margin + 30
-
-        return x, y
 
     def render_game_over(self, final_score: int):
         """
