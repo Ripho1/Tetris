@@ -92,7 +92,7 @@
   - [ ] Fullscreen mode support
 - [ ] Performance optimization
 - [ ] Code cleanup and documentation
- - [ ] Debug: Generate and place any piece in legal positions
+- [ ] Debug: Generate and place any piece in legal positions
 
 **Test Criteria**: Game runs smoothly, all features work, code is well-documented, controls customizable, responsive on different resolutions
 

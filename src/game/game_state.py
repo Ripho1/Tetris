@@ -313,7 +313,7 @@ class GameState:
         next_type = (
             self.next_piece.piece_type.value if self.next_piece is not None else None
         )
-        active_pos: Tuple[int, int] | None = (
+        active_pos: Optional[Tuple[int, int]] = (
             (self.active_piece.x, self.active_piece.y) if self.active_piece else None
         )
         active_rot = self.active_piece.rotation if self.active_piece else None
