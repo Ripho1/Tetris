@@ -14,36 +14,38 @@ All game settings are centralized in `src/config/settings.py`. This file organiz
 
 ## Common Customizations
 
-### Next Piece Preview Location
+### Next Piece Preview Position
 
-The next piece preview can be displayed in any of the four corners of the screen.
+The next piece preview is positioned using absolute pixel coordinates.
 
-**Configuration Setting**: `settings.renderer.NEXT_PIECE_LOCATION`
+**Configuration Setting**: `settings.renderer.NEXT_PREVIEW_POSITION`
 
-**Available Options**:
-- `"top-right"` - Upper right corner (default)
-- `"top-left"` - Upper left corner
-- `"bottom-right"` - Lower right corner
-- `"bottom-left"` - Lower left corner
+**Type**: `(x, y)` tuple representing the top-left of the preview box.
 
 **How to Change**:
 
 1. Open `src/config/settings.py`
 2. Find the `Renderer` class
-3. Change the `NEXT_PIECE_LOCATION` value:
+3. Set `NEXT_PREVIEW_POSITION` to the desired `(x, y)` tuple:
 
 ```python
 class Renderer:
     # ... other settings ...
-    
-    # Change from "top-right" to your preferred location
-    NEXT_PIECE_LOCATION = "top-left"  # Or "bottom-right", "bottom-left"
+
+    # Example: top-right corner (default)
+    NEXT_PREVIEW_POSITION = (
+        Dimensions.SCREEN_WIDTH - PREVIEW_BOX_SIZE - PREVIEW_MARGIN,
+        FONT_SIZE + PREVIEW_LABEL_MARGIN,
+    )
 ```
+
+
 
 **Additional Preview Settings**:
 ```python
-PREVIEW_BOX_SIZE = 100  # Size of the preview box (pixels)
-PREVIEW_MARGIN = 20     # Distance from screen edges (pixels)
+PREVIEW_BOX_SIZE = 100       # Size of the preview box (pixels)
+PREVIEW_MARGIN = 20          # Distance from screen edges (pixels)
+PREVIEW_LABEL_MARGIN = 8     # Spacing between label and preview box (pixels)
 ```
 
 ### Game Speed
